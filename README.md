@@ -1,0 +1,1 @@
+Work first, details later
