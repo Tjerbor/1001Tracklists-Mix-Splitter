@@ -1,3 +1,4 @@
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -15,15 +16,18 @@ public class Tracklister {
     }
 
     public static void getData(String Website) throws IOException {
-        Document doc = Jsoup.connect(Website).ignoreContentType(true)
-                .userAgent("Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0")
-                .referrer("http://www.google.com")
-                .cookie("euconsent-v2", "CPiH4tgPiH4tgDlBHBDECpCgAAAAAH_AACiQJHwAASPAJMNW4gC7EscCbaMIoEQIwrCQ6gUAFFAMLRAYQOrgp2VwE-sIEACAUARgRAhwBRgwCAAACAJCIgJAjwQCAAiAQAAgAVCIQAEbAIKACwMAgAFANCxRigCECQgyICIpTAgIkSCgnsqEEoP9DTCEOssAKDR_xUICJQAhWBEJCwchwRICXiyQLMUb5ACMEKAUSoVqAQAA")
-                .timeout(120000)
+        Document doc = Jsoup.connect(Website)
+                .timeout(30000)
                 .followRedirects(true)
                 .get();
+        String url = "http://t.co/i5dE1K4vSs";
+        Connection.Response response = Jsoup.connect(url).followRedirects(true).execute();
         writeHTMLFile(doc.html());
         System.out.println(doc.html());
+    }
+
+    public static void getDataUwu(String Website) throws IOException {
+        //TODO
     }
 
     public static void writeHTMLFile(String input){
