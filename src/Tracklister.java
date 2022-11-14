@@ -1,36 +1,45 @@
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.javascript.host.file.File;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class Tracklister {
     private String website;
     private String[] data;
-    private static String title;
+    private String title;
+    private WebClient webClient = new WebClient();
+    private HtmlPage page;
 
     public Tracklister(String website) {
         this.website = website;
     }
 
-    public static void getData(String Website) throws IOException {
-        Document doc = Jsoup.connect(Website)
-                .timeout(30000)
-                .followRedirects(true)
-                .get();
-        String url = "http://t.co/i5dE1K4vSs";
-        Connection.Response response = Jsoup.connect(url).followRedirects(true).execute();
+    public Tracklister() {
+    }
+
+    public void scrape(String url) throws IOException {
+        webClient.getOptions().setJavaScriptEnabled(true);
+        webClient.getOptions().setThrowExceptionOnScriptError(false);
+        webClient.waitForBackgroundJavaScript(8000);
+        page = webClient.getPage(url);
+        Document doc = Jsoup.parse(page.asXml());
+        Elements tracks = doc.select("#tlp_5921274");
+
+
+//        driver.get(url);
         writeHTMLFile(doc.html());
-        System.out.println(doc.html());
     }
 
-    public static void getDataUwu(String Website) throws IOException {
-        //TODO
-    }
-
-    public static void writeHTMLFile(String input){
+    private static void writeHTMLFile(String input) {
         FileWriter fWriter = null;
         BufferedWriter writer = null;
         try {
