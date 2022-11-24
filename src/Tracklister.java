@@ -31,10 +31,11 @@ public class Tracklister {
         webClient.waitForBackgroundJavaScript(8000);
         page = webClient.getPage(url);
         Document doc = Jsoup.parse(page.asXml());
+        System.out.println(doc.html());
 
+        extractData(doc);
 
-//        driver.get(url);
-        writeHTMLFile(doc.html(), "wholeSite");
+        //writeHTMLFile(doc.html(), "wholeSite");
     }
 
     public void shietttt() throws IOException {
@@ -87,9 +88,6 @@ public class Tracklister {
                     start,
                     publisher,
                     genre));
-        }
-        for (Song s : this.songs) {
-            System.out.println(s);
         }
     }
 
@@ -151,5 +149,10 @@ public class Tracklister {
         return duration;
     }
 
+    public void printSongs() {
+        for (Song song : this.songs) {
+            System.out.println(song.toString());
+        }
+    }
 
 }
