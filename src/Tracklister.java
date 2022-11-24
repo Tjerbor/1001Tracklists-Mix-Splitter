@@ -9,10 +9,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Tracklister {
     private String website;
-    private String[] data;
+    private ArrayList<Song> songs = new ArrayList<Song>();
     private String title;
     private WebClient webClient = new WebClient();
     private HtmlPage page;
@@ -36,7 +37,7 @@ public class Tracklister {
         writeHTMLFile(doc.html(), "wholeSite");
     }
 
-    public static void shietttt() throws IOException {
+    public void shietttt() throws IOException {
         try {
             File file = new File("fileName.html");
             extractData(Jsoup.parse(file));
@@ -45,28 +46,50 @@ public class Tracklister {
         }
     }
 
-    private static void extractData(Document doc) {
-        int track;
-        String start;
-        String artists;
-        String title;
-
+    private void extractData(Document doc) {
         Element parent = doc.getElementById("tlTab");
-        Elements els = parent.children();
-        els = els.select("[class^=tlpTog bItm tlpItem]");
-        System.out.println(els.size());
-        System.out.println(els.first().getElementsByTag("meta").first().attr("content"));
-        start = els.first().select("[id^=cue]").text();
-        track = Integer.parseInt(els.first().select("[id$=tracknumber_value]").text());
-        String[] artistsAndTitle = getArtistsAndTitle(
-                els.
-                        first().
-                        getElementsByTag("meta").
-                        first().attr("content"));
-        artists = artistsAndTitle[0];
-        title = artistsAndTitle[1];
-        if (els.isEmpty()) {
-            System.out.println("Empty Dipshit");
+        Elements songs = parent.children();
+        songs = songs.select("[class^=tlpTog bItm tlpItem]");
+        this.songs.clear();
+
+        for (Element el : songs) {
+            int track;
+            String start;
+            String artists = null;
+            String title = null;
+            int duration = -1;
+            String publisher = null;
+            String genre = null;
+
+            for (Element curr : el.getElementsByTag("meta")) {
+                String itemprop = curr.attr("itemprop");
+                if (itemprop.equals("duration")) {
+                    duration = getDurationOf(curr.attr("content"));
+                } else if (itemprop.equals("publisher")) {
+                    publisher = curr.attr("content");
+                } else if (itemprop.equals("genre")) {
+                    genre = curr.attr("content");
+                } else if (itemprop.equals("name")) {
+                    String[] artistsAndTitle = getArtistsAndTitle(
+                            curr.attr("content"));
+                    artists = artistsAndTitle[0];
+                    title = artistsAndTitle[1];
+                }
+            }
+            start = el.select("[id^=cue]").text();
+            track = Integer.parseInt(el.select("[id$=tracknumber_value]").text());
+
+            this.songs.add(new Song(
+                    artists,
+                    title,
+                    track,
+                    duration, //unnecessary?
+                    start,
+                    publisher,
+                    genre));
+        }
+        for (Song s : this.songs) {
+            System.out.println(s);
         }
     }
 
@@ -116,6 +139,16 @@ public class Tracklister {
             result[1] = split[split.length - 1];
         }
         return result;
+    }
+
+    private static int getDurationOf(String intput) {
+        int duration = -1;
+        if (intput != null) {
+            String[] split = intput.split("M");
+            duration = Integer.parseInt(split[0].substring(2)) * 60
+                    + Integer.parseInt(split[1].substring(0, split[1].length() - 1));
+        }
+        return duration;
     }
 
 

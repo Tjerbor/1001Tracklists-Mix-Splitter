@@ -2,20 +2,32 @@ public class Song {
     private final String artists;
     private final String title;
     private final int track;
-    private final double duration;
+    private final int duration;
     private final String start;
-    private final String label;
+    private final String publisher;
 
-    public Song(String artists, String title, int track, double duration, String start, String label) {
+    private final String genre;
+
+    public Song(String artists, String title, int track, int duration, String start, String publisher, String genre) {
         this.artists = artists;
         this.title = title;
         this.track = track;
         this.duration = duration;
         this.start = start;
-        this.label = label;
+        this.publisher = publisher;
+        this.genre = genre;
     }
 
-    public Song(String artists, String title, int track, double duration, String start) {
-        this(artists, title, track, duration, start, "N/A");
+    @Override
+    public String toString() {
+        return "Song{" +
+                track + ": " +
+                "artists='" + artists + '\'' +
+                ", title='" + title + '\'' +
+                ", duration=" + duration +
+                ", start='" + start + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", genre='" + genre + '\'' +
+                '}';
     }
 }
