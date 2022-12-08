@@ -78,11 +78,18 @@ public class Tracklister {
                 }
             }
             start = el.select("[id^=cue]").text();
-            track = Integer.parseInt(el.select("[id$=tracknumber_value]").text());
+            String tracc = el.select("[id$=tracknumber_value]").text();
+            try {
+                track = Integer.parseInt(tracc);
+            } catch (Exception e){
+                Song curr = this.songs.get(this.songs.size()-1);
+                track = curr.getTrack();
+                curr.setType("Mashup"); //here idiot
+            }
 
             this.songs.add(new Song(
-                    artists,
-                    title,
+                    artists != null ? artists : "ID",
+                    title != null ? title : "ID",
                     track,
                     duration, //unnecessary?
                     start,

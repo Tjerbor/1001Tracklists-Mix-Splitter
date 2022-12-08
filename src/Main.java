@@ -8,7 +8,7 @@ public class Main {
         Tracklister tr = new Tracklister();
 
         //tr.shietttt();
-        tr.scrape("https://www.1001tracklists.com/tracklist/2jh9jvh1/tcts-kiss-nights-2022-11-19.html");
+        tr.scrape("https://www.1001tracklists.com/tracklist/16l4c32t/curbi-alternative-arena-creamfields-chile-2022-11-06.html");
         tr.printSongs();
 
 
