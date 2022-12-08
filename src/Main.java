@@ -4,6 +4,7 @@ import java.util.logging.Level;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        loadDependecies();
         supressWarnings();
         Tracklister tr = new Tracklister();
 
@@ -25,5 +26,9 @@ public class Main {
     public static void supressWarnings(){
         java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");
+    }
+
+    public static void loadDependecies(){
+        //TODO
     }
 }
