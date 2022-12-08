@@ -11,7 +11,7 @@ public class Downloader {
     }
 
     public void download(String URL) throws IllegalStateException {
-        if (URL == null && this.URL == null) {
+        if (URL == null) {
             throw new IllegalStateException("No URL has been given.");
         }
         this.setURL(URL);
@@ -28,6 +28,9 @@ public class Downloader {
     }
 
     public void download() throws IllegalStateException {
+        if(this.URL == null){
+            throw new IllegalStateException("No URL has been set.");
+        }
         download(this.URL);
     }
 
