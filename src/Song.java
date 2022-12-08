@@ -8,9 +8,9 @@ public class Song {
 
     private final String genre;
 
-    private String type;
+    private final String type;
 
-    public Song(String artists, String title, int track, int duration, String start, String publisher, String genre) {
+    public Song(String artists, String title, int track, int duration, String start, String publisher, String genre, String type) {
         this.artists = artists;
         this.title = title;
         this.track = track;
@@ -18,6 +18,7 @@ public class Song {
         this.start = start;
         this.publisher = publisher;
         this.genre = genre;
+        this.type = type;
     }
 
     @Override
@@ -69,9 +70,5 @@ public class Song {
 
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }

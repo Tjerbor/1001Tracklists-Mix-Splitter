@@ -31,7 +31,7 @@ public class Tracklister {
         webClient.waitForBackgroundJavaScript(8000);
         page = webClient.getPage(url);
         Document doc = Jsoup.parse(page.asXml());
-        System.out.println(doc.html());
+        //System.out.println(doc.html());
 
         extractData(doc);
 
@@ -61,6 +61,7 @@ public class Tracklister {
             int duration = -1;
             String publisher = null;
             String genre = null;
+            String type = null;
 
             for (Element curr : el.getElementsByTag("meta")) {
                 String itemprop = curr.attr("itemprop");
@@ -84,7 +85,7 @@ public class Tracklister {
             } catch (Exception e){
                 Song curr = this.songs.get(this.songs.size()-1);
                 track = curr.getTrack();
-                curr.setType("Mashup"); //here idiot
+                type = "Mashup";
             }
 
             this.songs.add(new Song(
@@ -94,8 +95,10 @@ public class Tracklister {
                     duration, //unnecessary?
                     start,
                     publisher,
-                    genre));
+                    genre,
+                    type));
         }
+
     }
 
     private static void writeHTMLFile(String input, String fileName) {
