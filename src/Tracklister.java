@@ -49,6 +49,7 @@ public class Tracklister {
 
     private void extractData(Document doc) {
         Element parent = doc.getElementById("tlTab");
+        this.title = doc.title();
         Elements songs = parent.children();
         songs = songs.select("[class^=tlpTog bItm tlpItem]");
         this.songs.clear();
@@ -79,11 +80,17 @@ public class Tracklister {
                 }
             }
             start = el.select("[id^=cue]").text();
+            if(start.equals("")){
+                start = "00:00";
+            }
+            else if (start.length() == 4) {
+                start = '0' + start;
+            }
             String tracc = el.select("[id$=tracknumber_value]").text();
             try {
                 track = Integer.parseInt(tracc);
-            } catch (Exception e){
-                Song curr = this.songs.get(this.songs.size()-1);
+            } catch (Exception e) {
+                Song curr = this.songs.get(this.songs.size() - 1);
                 track = curr.getTrack();
                 type = "Mashup";
             }
@@ -160,9 +167,17 @@ public class Tracklister {
     }
 
     public void printSongs() {
+        System.out.println(title);
         for (Song song : this.songs) {
             System.out.println(song.toString());
         }
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
 }
