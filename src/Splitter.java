@@ -3,8 +3,9 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class Splitter {
-    public static void createCUE(ArrayList<Song> songs, String filename) {
-        String result = String.format("FILE \"%s\" WAVE", filename);
+    public static void createCUE(ArrayList<Song> songs, String title) {
+        String result = String.format("REM COMMENT \"%s\"",title) +
+                String.format("\nFILE \"%s\" WAVE", title);
         String tab = "  "; //2 Spaces
         String tab2 = "    "; //4 Spaces
 
@@ -13,10 +14,10 @@ public class Splitter {
             result += String.format("\n%sTRACK %s AUDIO",tab,++track);
             result += String.format("\n%sTITLE \"%s\"",tab2,song.getTitle());
             result += String.format("\n%sPERFORMER \"%s\"",tab2,song.getArtists());
-            result += String.format("\n%sINDEX 01 %s:00",tab2,song.getStart());
+            result += String.format("\n%sINDEX 01 %s",tab2,song.getStart());
         }
 
-        writeCUEFile(result,filename);
+        writeCUEFile(result,title);
     }
 
     private static void writeCUEFile(String input, String fileName) {

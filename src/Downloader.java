@@ -18,8 +18,11 @@ public class Downloader {
     public void download(String URL, String title) throws IllegalStateException {
         if (URL == null) {
             throw new IllegalStateException("No URL has been given.");
+        } else if (title == null) {
+            throw new IllegalStateException("No title has been given.");
         }
-        this.setURL(URL);
+        this.URL = URL;
+        this.title = title;
 
         String projectPath = System.getProperty("user.dir");
 
@@ -37,7 +40,7 @@ public class Downloader {
                         "--embed-chapters",
                         "--extract-audio",
                         "-o",
-                        String.format("\"%s%s\"", title,".%(ext)s"),
+                        String.format("\"%s%s\"", title, ".%(ext)s"),
                         this.URL
                 };
                 Runtime.getRuntime().exec(cmd);
@@ -50,6 +53,8 @@ public class Downloader {
     public void download() throws IllegalStateException {
         if (this.URL == null) {
             throw new IllegalStateException("No URL has been set.");
+        } else if (this.title == null) {
+            throw new IllegalStateException("No title has been set.");
         }
         download(this.URL, this.title);
     }
@@ -64,9 +69,5 @@ public class Downloader {
 
     public String getFilePath() {
         return filePath;
-    }
-
-    public void setURL(String URL) {
-        this.URL = URL;
     }
 }

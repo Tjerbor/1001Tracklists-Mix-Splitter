@@ -1,5 +1,6 @@
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -79,13 +80,7 @@ public class Tracklister {
                     title = artistsAndTitle[1];
                 }
             }
-            start = el.select("[id^=cue]").text();
-            if(start.equals("")){
-                start = "00:00";
-            }
-            else if (start.length() == 4) {
-                start = '0' + start;
-            }
+            start = formattedStart(el.select("[id^=cue]").text());
             String tracc = el.select("[id$=tracknumber_value]").text();
             try {
                 track = Integer.parseInt(tracc);
@@ -171,6 +166,23 @@ public class Tracklister {
         for (Song song : this.songs) {
             System.out.println(song.toString());
         }
+    }
+
+    private static String formattedStart(String start) {
+        if (start == null || start.equals("")) {
+            return "00:00:00";
+        }
+
+        String[] split = start.split(":");
+        String result = ":" + StringUtils.leftPad(split[split.length - 1], 2, "0") + ":00";
+
+        Integer minutes = Integer.parseInt(split[split.length - 2]);
+        if (split.length == 3) {
+            minutes += Integer.parseInt(split[0]) * 60;
+        }
+
+        result = StringUtils.leftPad(minutes.toString(), 2, "0") + result;
+        return result;
     }
 
     public String getTitle() {

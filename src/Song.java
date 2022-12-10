@@ -3,7 +3,7 @@ public class Song {
     private final String title;
     private final int track;
     private final int duration;
-    private final String start;
+    private final String start; //mm:ss:msms
     private final String publisher;
 
     private final String genre;
