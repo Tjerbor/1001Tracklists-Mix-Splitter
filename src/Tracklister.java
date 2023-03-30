@@ -80,7 +80,6 @@ public class Tracklister {
                     title = artistsAndTitle[1];
                 }
             }
-            start = formattedStart(el.select("[id^=cue]").text());
             String tracc = el.select("[id$=tracknumber_value]").text();
             try {
                 track = Integer.parseInt(tracc);
@@ -89,6 +88,7 @@ public class Tracklister {
                 track = curr.getTrack();
                 type = "Mashup";
             }
+            start = formattedStart(el.select("[id^=cue]").text(), track);
 
             this.songs.add(new Song(
                     artists != null ? artists : "ID",
@@ -100,7 +100,7 @@ public class Tracklister {
                     genre,
                     type));
         }
-
+        reduceMashups();
     }
 
     private static void writeHTMLFile(String input, String fileName) {
@@ -168,9 +168,13 @@ public class Tracklister {
         }
     }
 
-    private static String formattedStart(String start) {
+    private static String formattedStart(String start, int track) {
         if (start == null || start.equals("")) {
-            return "00:00:00";
+            if (track == 1) {
+                return "00:00:00";
+            } else {
+                return null;
+            }
         }
 
         String[] split = start.split(":");
@@ -183,6 +187,40 @@ public class Tracklister {
 
         result = StringUtils.leftPad(minutes.toString(), 2, "0") + result;
         return result;
+    }
+
+    private void reduceMashups() {
+        int index = -1;
+        for (int i = 0; i < songs.size(); i++) {
+            index++;
+            System.out.println(index);
+            Song song = songs.get(index);
+            if (song.getType() != null &&
+                    song.getType().equals("Mashup") &&
+                    (song.getStart() == null || !Settings.isSplit_Mashups())) {
+                Song predecessor = songs.get(index - 1);
+                if (predecessor.getMashupCount() == 0) {
+                    predecessor.setArtists(
+                            predecessor.getArtists() +
+                                    " (w/ " + song.getArtists() + ")"
+                    );
+                    predecessor.setTitle(
+                            predecessor.getTitle() +
+                                    " (w/ " + song.getTitle() + ")"
+                    );
+                } else {
+                    predecessor.setArtists(
+                            predecessor.getArtists().substring(0, predecessor.getArtists().length() - 1) +
+                                    " " + song.getArtists() + ")"
+                    );
+                    predecessor.setTitle(
+                            predecessor.getTitle().substring(0, predecessor.getTitle().length() - 1) +
+                                    " " + song.getTitle() + ")"
+                    );
+                }
+                songs.remove(index--);
+            }
+        }
     }
 
     public String getTitle() {

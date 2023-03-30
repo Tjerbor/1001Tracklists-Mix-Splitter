@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 public class Main {
-    static String tracklist = "https://www.1001tracklists.com/tracklist/l2d844t/mat-zo-abgt-500-banc-of-california-stadium-los-angeles-united-states-2022-10-15.html";
+    static String tracklist = "https://www.1001tracklists.com/tracklist/16l4c32t/curbi-alternative-arena-creamfields-chile-2022-11-06.html";
     static String stream = "https://www.youtube.com/watch?v=qSdJTjWE9Do";
 
 
@@ -17,8 +17,8 @@ public class Main {
         tr.printSongs();
 
         //Downloading audio
-        Downloader downloader = new Downloader(stream, tr.getTitle());
-        downloader.download();
+        //Downloader downloader = new Downloader(stream, tr.getTitle());
+        //downloader.download();
 
         /*
         Tracklister tracks = new Tracklister("https://www.1001tracklists.com/track/18uj2vdx/john-summit-show-me/index.html");

@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.IOException;
 
 public class Downloader {
@@ -26,7 +25,7 @@ public class Downloader {
 
         String projectPath = System.getProperty("user.dir");
 
-        if (Dependencies.getYtDlp()) {
+        if (Settings.getYtDlp()) {
             try {
                 String[] cmd = {
                         "cmd",
